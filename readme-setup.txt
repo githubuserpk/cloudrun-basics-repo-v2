@@ -13,9 +13,19 @@ Step 03: Create cloudrun-cicd-sa service account and grant required roles to the
 gcloud iam service-accounts create cloudrun-cicd-sa ^
   --display-name="GitHub Actions cloudrun cicd service account"
 
+
+
 gcloud projects add-iam-policy-binding pk-aiproject ^
   --member="serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com" ^
   --role="roles/run.admin"
+
+gcloud projects add-iam-policy-binding pk-aiproject ^
+  --member="serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com" ^
+  --role="roles/artifactregistry.admin"
+
+gcloud projects add-iam-policy-binding pk-aiproject ^
+  --member="serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com" ^
+  --role="roles/iam.serviceAccountUser"
 
 gcloud projects add-iam-policy-binding pk-aiproject ^
   --member="serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com" ^
