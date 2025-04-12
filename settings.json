@@ -1,0 +1,26 @@
+//This settings you get it when you run the command Ctrl + Shift + P and select "Preferences: Open Settings (JSON)"
+{
+    "python.defaultInterpreterPath": "C:\\Users\\Pradeep\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "cloudcode.project": "pkdeltaai-05",
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "git.autofetch": true,
+    "geminicodeassist.project": "pkdeltaai-05",
+
+
+    //Adding steps to open command prompt by default instead of PS and setup the venv 
+    "python.terminal.activateEnvironment": true,
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "terminal.integrated.profiles.windows": {
+        "Command Prompt": {
+            "path": ["${env:windir}\\System32\\cmd.exe"],
+            "args": ["/k", ".\\venv\\Scripts\\activate.bat"]
+        }
+    },
+    "terminal.integrated.defaultLocation": "view",
+    "terminal.integrated.startIn": "workspaceRoot"    
+}
+
+
