@@ -25,6 +25,10 @@ gcloud projects add-iam-policy-binding pk-aiproject ^
 
 gcloud projects add-iam-policy-binding pk-aiproject ^
   --member="serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com" ^
+  --role="roles/editor"
+
+gcloud projects add-iam-policy-binding pk-aiproject ^
+  --member="serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com" ^
   --role="roles/iam.serviceAccountUser"
 
 gcloud projects add-iam-policy-binding pk-aiproject ^
