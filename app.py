@@ -1,6 +1,7 @@
 # app.py
 from flask import Flask, Response
 from google.cloud import storage
+from datetime import datetime
 
 import pkg_resources
 print(pkg_resources.get_distribution("google-cloud-storage"))
@@ -32,7 +33,8 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
     """Simple route to verify the service is running."""
-    return Response("Hello PK", mimetype="text/plain")
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Format the current time
+    return Response(f"Hello PK, current time is {current_time}", mimetype="text/plain")
 
 
 # Run on port 8081 (Cloud Run expects the container to listen on this port)
