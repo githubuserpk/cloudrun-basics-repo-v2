@@ -19,6 +19,11 @@ gcloud projects add-iam-policy-binding pk-aiproject ^
 
 gcloud projects add-iam-policy-binding pk-aiproject ^
   --member="serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com" ^
+  --role="roles/serviceusage.serviceUsageAdmin"
+
+
+gcloud projects add-iam-policy-binding pk-aiproject ^
+  --member="serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com" ^
   --role="roles/artifactregistry.writer"
 
 gcloud projects add-iam-policy-binding pk-aiproject ^
@@ -36,4 +41,4 @@ gcloud iam service-accounts keys create cloudrun-cicd-sa-key.json ^
 
 Step 04: In github UI, create a git hub actions template for cloud run.  It will create the 
     workflows and the yml file 
-    
+
