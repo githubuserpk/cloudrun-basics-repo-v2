@@ -57,6 +57,7 @@ gcloud projects add-iam-policy-binding pk-aiproject ^
   --member="serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com" ^
   --role="roles/storage.admin"
 
+# also assigned storage object admin from UI
 
 gcloud iam service-accounts keys create cloudrun-cicd-sa-key.json ^
   --iam-account=cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com
