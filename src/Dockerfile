@@ -16,8 +16,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Create a non-root user and use it to run the app
 USER appuser
 
-# Copy contents from /src to the working directory
-COPY src/ /app/
+# Copy contents to the working directory
+COPY . /app/
+
 
 # Expose the port
 EXPOSE 8080
