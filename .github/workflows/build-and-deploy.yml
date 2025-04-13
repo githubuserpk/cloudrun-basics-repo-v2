@@ -40,7 +40,7 @@ env:
   SERVICE_NAME: helloservice1
   IMAGE_NAME: helloservice1-image
   REPO_NAME: helloservice-repo
-  BUCKET_NAME: helloservice-bucket-001
+  #BUCKET_NAME: helloservice-bucket-001
 
 jobs:
   deploy:
