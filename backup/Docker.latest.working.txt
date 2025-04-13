@@ -4,6 +4,8 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+# Appending to path to avoid warnings 
+ENV PATH="/home/appuser/.local/bin:$PATH"
 
 # Create a non-root user
 RUN useradd -m appuser
