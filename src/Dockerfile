@@ -9,12 +9,9 @@ ENV PYTHONUNBUFFERED=1
 RUN useradd -m appuser
 WORKDIR /app
 
-# Only Flask needed for now
-RUN pip install --no-cache-dir flask google-cloud-storage
-
-
-COPY app.py .
-
+# Copy requirements.txt first (to leverage Docker layer caching)
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Create a non-root user and use it to run the app
 USER appuser
