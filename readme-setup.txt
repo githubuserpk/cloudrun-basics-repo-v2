@@ -81,3 +81,10 @@ gcloud iam service-accounts keys create cloudrun-cicd-sa-key.json ^
 Step 04: In github UI, create a git hub actions template for cloud run.  It will create the 
     workflows and the yml file 
 
+Step 05: Give permissions to cicd service account separately as it has UBLA enabled, so even if you 
+give perms at project level, it does not matter 
+
+gsutil iam ch ^
+  serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com:roles/storage.objectAdmin ^
+  gs://pk-aiproject_cloudbuild
+
