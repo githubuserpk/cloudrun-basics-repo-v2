@@ -98,7 +98,7 @@ jobs:
       - name: Clean up old .tgz files from GCS bucket
         run: |
           # Set your GCS bucket and folder
-          BUCKET_NAME="gs://$PROJECT_ID_cloudbuild/source"
+          BUCKET_NAME="gs://${PROJECT_ID}_cloudbuild/source"
           
           # List all .tgz files in the source folder, sorted by modification time
           # This will list files sorted by modification date in reverse order
