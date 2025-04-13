@@ -76,7 +76,7 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           gcloud builds submit src \
-            --tag $REGION-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$IMAGE_NAME .
+            --tag $REGION-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$IMAGE_NAME
 
       - name: Deploy to Cloud Run
         run: |
