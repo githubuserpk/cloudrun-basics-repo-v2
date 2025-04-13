@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED=1
 
 # Create a non-root user
 RUN useradd -m appuser
-WORKDIR /app
+WORKDIR /src
 
 # Create and activate a virtual environment
 RUN python -m venv venv
@@ -18,13 +18,13 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Change ownership of the /app directory to the non-root user
-RUN chown -R appuser:appuser /app
+RUN chown -R appuser:appuser /src
 
 # Create a non-root user and use it to run the app
 USER appuser
 
 # Copy contents to the working directory
-COPY . /app/
+COPY . /src/
 
 
 # Expose the port
