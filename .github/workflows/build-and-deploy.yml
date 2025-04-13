@@ -41,6 +41,7 @@ env:
   IMAGE_NAME: helloservice1-image
   REPO_NAME: helloservice-repo
   #BUCKET_NAME: helloservice-bucket-001
+  BUCKET_NAME: "gs://pk-aiproject_cloudbuild/source"
 
 jobs:
   deploy:
@@ -93,15 +94,21 @@ jobs:
             --region=$REGION \
             --format="value(status.url)"
 
+      - name: Debug active gcloud auth
+        run: |
+          gcloud auth list       
+          gsutil ls gs://ai-project_cloudbuild/source/*.tgz     
 
       # List and delete old .tgz files from GCS, keeping only the latest 5
       - name: Clean up old .tgz files from GCS bucket
         run: |
           # Set your GCS bucket and folder
-          BUCKET_NAME="gs://${PROJECT_ID}_cloudbuild/source"
+          
           
           # List all .tgz files in the source folder, sorted by modification time
           # This will list files sorted by modification date in reverse order
           gsutil ls -l $BUCKET_NAME/*.tgz | sort -k2 -r | tail -n +6 | awk '{print $NF}' | xargs -I {} gsutil rm {}
 
         continue-on-error: true  # Optional: Continue even if this step fails            
+
+
