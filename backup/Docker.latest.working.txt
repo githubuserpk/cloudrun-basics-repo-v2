@@ -4,9 +4,6 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Appending to path to avoid warnings, below is required because pip installs cli tools like flask into This
-# folder: /home/appuser/.local/bin which is not in current users PATH, hence adding
-ENV PATH="/home/appuser/.local/bin:$PATH"
 
 # Create a non-root user
 RUN useradd -m appuser
@@ -16,8 +13,10 @@ WORKDIR /src
 USER appuser
 
 # Create and activate a virtual environment
+# Appending to path to avoid warnings, below is required because pip installs cli tools like flask into This
+# folder: /home/appuser/.local/bin which is not in current users PATH, hence adding
 RUN python -m venv venv
-ENV PATH="/app/venv/bin:$PATH"
+ENV PATH="/src/venv/bin:/home/appuser/.local/bin:$PATH"
 
 # Copy requirements.txt first (to leverage Docker layer caching)
 COPY requirements.txt ./
