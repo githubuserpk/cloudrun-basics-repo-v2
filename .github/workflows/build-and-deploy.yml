@@ -96,20 +96,22 @@ jobs:
 
 
       # clean up cloud storage files 
-      - name: Write service account JSON key to disk
-        run: |
-          printf "%s" "${{ secrets.CLOUDRUN_CICD_SA }}" > /tmp/key.json
-
-
-      - name: Activate service account for gsutil
-        run: gcloud auth activate-service-account --key-file=/tmp/key.json
-    
-      - name: Clean up old .tgz files from GCS
-        run: |
-          BUCKET_NAME="gs://${PROJECT_ID}_cloudbuild/source"
+      - name: Set up gcloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.CLOUDRUN_CICD_SA }}
       
-          echo "Listing files in $BUCKET_NAME"
-          gsutil ls -l $BUCKET_NAME/*.tgz | sort -k2 -r | tail -n +6 | awk '{print $NF}' | xargs -r gsutil rm
+      - name: Debug current account
+        run: gcloud auth list
+    
+    
+      # - name: Clean up old .tgz files from GCS
+      #   run: |
+      #     BUCKET_NAME="gs://${PROJECT_ID}_cloudbuild/source"
+      
+      #     echo "Listing files in $BUCKET_NAME"
+      #     gsutil ls -l $BUCKET_NAME/*.tgz | sort -k2 -r | tail -n +6 | awk '{print $NF}' | xargs -r gsutil rm
       
 
 
