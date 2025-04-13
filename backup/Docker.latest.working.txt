@@ -4,12 +4,16 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Appending to path to avoid warnings 
+# Appending to path to avoid warnings, below is required because pip installs cli tools like flask into This
+# folder: /home/appuser/.local/bin which is not in current users PATH, hence adding
 ENV PATH="/home/appuser/.local/bin:$PATH"
 
 # Create a non-root user
 RUN useradd -m appuser
 WORKDIR /src
+
+# Create a non-root user and use it to run the app
+USER appuser
 
 # Create and activate a virtual environment
 RUN python -m venv venv
@@ -21,9 +25,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Change ownership of the /app directory to the non-root user
 RUN chown -R appuser:appuser /src
-
-# Create a non-root user and use it to run the app
-USER appuser
 
 # Copy contents to the working directory
 COPY . /src/
