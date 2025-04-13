@@ -94,13 +94,6 @@ jobs:
             --region=$REGION \
             --format="value(status.url)"
 
-
-      # clean up cloud storage files 
-      - name: Set up gcloud
-        id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.CLOUDRUN_CICD_SA }}
       
       - name: Debug current account
         run: gcloud auth list
