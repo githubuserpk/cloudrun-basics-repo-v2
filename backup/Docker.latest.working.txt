@@ -30,7 +30,9 @@ COPY . /src/
 
 
 # Expose the port
-EXPOSE 8080
+# EXPOSE 8080
+
+RUN echo $PATH
 
 # Run the app as the non-root user
 CMD ["python", "app.py"]
