@@ -94,20 +94,19 @@ jobs:
             --region=$REGION \
             --format="value(status.url)"
 
-      - name: Debug active gcloud auth
-        run: |
-          gcloud auth list       
-          gsutil ls gs://ai-project_cloudbuild/source/*.tgz     
+      - name: Set up Google Cloud CLI for gsutil 
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.CLOUDRUN_CICD_SA }}
 
-      # List and delete old .tgz files from GCS, keeping only the latest 5
-      - name: Clean up old .tgz files from GCS bucket
+
+      - name: Clean up old .tgz files from GCS
         run: |
-          # Set your GCS bucket and folder
-          
-          
-          # List all .tgz files in the source folder, sorted by modification time
-          # This will list files sorted by modification date in reverse order
-          gsutil ls -l $BUCKET_NAME/*.tgz | sort -k2 -r | tail -n +6 | awk '{print $NF}' | xargs -I {} gsutil rm {}
+          BUCKET_NAME="gs://${PROJECT_ID}_cloudbuild/source"
+      
+          echo "Listing files in $BUCKET_NAME"
+          gsutil ls -l $BUCKET_NAME/*.tgz | sort -k2 -r | tail -n +6 | awk '{print $NF}' | xargs -r gsutil rm
+
 
         continue-on-error: true  # Optional: Continue even if this step fails            
 
