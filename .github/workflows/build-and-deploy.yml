@@ -92,3 +92,16 @@ jobs:
           gcloud run services describe $SERVICE_NAME \
             --region=$REGION \
             --format="value(status.url)"
+
+
+      # List and delete old .tgz files from GCS, keeping only the latest 5
+      - name: Clean up old .tgz files from GCS bucket
+        run: |
+          # Set your GCS bucket and folder
+          BUCKET_NAME="gs://$PROJECT_ID_cloudbuild/source"
+          
+          # List all .tgz files in the source folder, sorted by modification time
+          # This will list files sorted by modification date in reverse order
+          gsutil ls -l $BUCKET_NAME/*.tgz | sort -k2 -r | tail -n +6 | awk '{print $NF}' | xargs -I {} gsutil rm {}
+
+        continue-on-error: true  # Optional: Continue even if this step fails            
