@@ -19,7 +19,7 @@ jobs:
       uses: 'google-github-actions/auth@v2'
 
       with:
-        credentials_json: '${{ secrets.GCP_GHA_SA_KEY }}'
+        credentials_json: '${{ secrets.CLOUDRUN_CICD_SA }}'
         project_id: ${{ secrets.GCP_PROJECT_ID }}    
 
 
