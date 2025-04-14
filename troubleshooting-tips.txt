@@ -1,0 +1,21 @@
+This command is very powerful and it gives a list of all the permissions assigned to a service account / user 
+It could be assigned at project level or bucket level or bq level etc 
+
+gcloud asset search-all-iam-policies   --scope=projects/pk-aiproject   --query="policy: cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com"   --format=json
+
+
+Check policy troubleshooter, it is very good, below command has some error but you get the idea
+gcloud policy-intelligence troubleshoot-policy iam   --principal-email="cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com"   --permission="storage.objects.list"   --resource-type="projects/pk-aiproject/buckets/pk-aiproject_cloudbuild"
+
+Git hub actions was not able to access cloudbuild bucket to cleanup the files 
+=============================================================================
+Although I had given extra perms like storage admin and storage object admin at project level pk-aiproject to the 
+cloudrun cicd service account, the git hub actions workflow kept failing saying Anonymous user perms error 401
+
+This is because the pk-aiproject_cloudbuild bucket has ACLs enabled ie it has Fine grained access rather than 
+ULBA uniform level bucket access, so I had to give permissions at bucket level as shown below
+
+gcloud storage buckets add-iam-policy-binding pk-aiproject_cloudbuild ^
+  --member="serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com" ^
+  --role="roles/storage.objectAdmin"
+
