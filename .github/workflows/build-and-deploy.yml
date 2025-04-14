@@ -80,7 +80,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          gcloud builds submit src \
+          gcloud builds submit services/helloservice1/src \
             --tag $REGION-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$IMAGE_NAME 
 
       - name: Deploy to Cloud Run

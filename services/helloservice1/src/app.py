@@ -34,7 +34,7 @@ app = Flask(__name__)
 def hello():
     """Simple route to verify the service is running."""
     current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Format the current time
-    return Response(f"Hello PK, current time is {current_time}", mimetype="text/plain")
+    return Response(f"Hello PK - repo: cloudrun-basic-repo-v2 - service: helloservice1, current time is {current_time}", mimetype="text/plain")
 
 
 # Run on port 8081 (Cloud Run expects the container to listen on this port)
