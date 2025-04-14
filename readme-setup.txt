@@ -94,3 +94,4 @@ gcloud storage buckets add-iam-policy-binding pk-aiproject_cloudbuild ^
   --role="roles/storage.objectAdmin"
 
 
+Step 06: Make sure to add the git hub secrets in repo2 ie cloudrun-basics-repo-v2
