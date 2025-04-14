@@ -8,20 +8,12 @@ This repository demonstrates how to build and deploy multiple Google Cloud Run s
 cloudrun-basics-repo-v2/
 │
 ├── services/
-│
-├── helloservice1/
-│
-│ └── src/
-│
-│
-├── app.py
-│
-│
-├── requirements.txt
-│
-│ └── Dockerfile
-│
-│
+    │
+    ├── helloservice1/
+    │ └── src/
+          ├── app.py
+          ├── requirements.txt
+          │ └── Dockerfile
 │ └── helloservice2/
 │
 └── src/
