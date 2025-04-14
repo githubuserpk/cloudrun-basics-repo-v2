@@ -1,4 +1,7 @@
 Setup steps for cloudrun-basics-repo-v2 - This hosts multiple services
+helloservice1
+helloservice2  etc 
+
 
 Step 01: Setup venv virtual environment
 ========================================
