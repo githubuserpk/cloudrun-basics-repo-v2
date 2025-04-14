@@ -1,0 +1,41 @@
+name: Cleanup old cloud build files and release space 
+
+on:
+    push:
+      branches:
+        - main  # Deploy only when code is pushed to the main branch
+
+jobs:
+  gcs-cloudbuild-cleanup:
+    runs-on: ubuntu-latest
+
+
+    steps:  
+    - name: 'Checkout repository'
+      uses: actions/checkout@v2
+
+
+    - name: Google Cloud Auth
+      uses: 'google-github-actions/auth@v2'
+
+      with:
+        credentials_json: '${{ secrets.GCP_GHA_SA_KEY }}'
+        project_id: ${{ secrets.GCP_PROJECT_ID }}    
+
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+
+    - name: check for sample gsutil ls cmd 
+      run: |
+        gsutil ls gs://bkt-aiguard/aiguard-deploy-log.txt 
+
+
+    # - name: Clean up old .tgz files from GCS
+    #   run: |
+    #     BUCKET_NAME="gs://${PROJECT_ID}_cloudbuild/source"
+
+    #     echo "Listing files in $BUCKET_NAME"
+    #     gsutil ls -l $BUCKET_NAME/*.tgz | sort -k2 -r | tail -n +6 | awk '{print $NF}' | xargs -r gsutil rm
+
+    
