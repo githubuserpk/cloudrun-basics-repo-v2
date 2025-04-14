@@ -84,7 +84,8 @@ Step 04: In github UI, create a git hub actions template for cloud run.  It will
 Step 05: Give permissions to cicd service account separately as it has UBLA enabled, so even if you 
 give perms at project level, it does not matter 
 
-gsutil iam ch ^
-  serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com:roles/storage.objectAdmin ^
-  gs://pk-aiproject_cloudbuild
+gcloud storage buckets add-iam-policy-binding pk-aiproject_cloudbuild ^
+  --member="serviceAccount:cloudrun-cicd-sa@pk-aiproject.iam.gserviceaccount.com" ^
+  --role="roles/storage.objectAdmin"
+
 
