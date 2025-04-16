@@ -103,6 +103,8 @@ gcloud compute firewall-rules create allow-cloud-run-to-tini \
 ===============
 modified steps:
 ===============
+01. 
+===
 gcloud compute networks create vpc-int-usc1 \
     --project=pk-aiproject \
     --subnet-mode=custom \
@@ -110,6 +112,8 @@ gcloud compute networks create vpc-int-usc1 \
 
 Done
 
+02:
+===
 gcloud compute networks subnets create subnet-int-usc1 \
     --project=pk-aiproject \
     --region=us-central1 \
@@ -124,6 +128,8 @@ create vpc network:
 
 create vm
 ============
+03. 
+====
 gcloud compute instances create cloudrun-server-vm \
   --project=pk-aiproject \
   --zone=us-central1-a \
@@ -139,6 +145,8 @@ gcloud compute instances create cloudrun-server-vm \
 
 firewall: allow ssh port 22
 ===========================
+04.
+====
 gcloud compute firewall-rules create allow-ssh-to-crvm \
     --project=pk-aiproject \
     --network=vpc-int-usc1 \
@@ -146,8 +154,10 @@ gcloud compute firewall-rules create allow-ssh-to-crvm \
     --source-ranges=0.0.0.0/0    # Use the IP range of your Cloud Run subnet ie subnet-int-us
     --target-tags=http-server,cloudrun-server      # If your cloudrun VM has a network tag
 
-firewall: allow http 8082 to crvm 
+firewall: allow http 8082 to crvm to access via internet 
 
+05.
+====
 gcloud compute firewall-rules create allow-http-to-crvm \
     --project=pk-aiproject \
     --network=vpc-int-usc1 \
@@ -180,18 +190,22 @@ Done
 
 # create firewall rule to allow the traffic
 =============================================
+06.
+====
 gcloud compute firewall-rules create allow-cloud-run-to-crvm \
     --project=pk-aiproject \
     --network=vpc-int-usc1 \
     --allow=tcp:8082 \
-    --source-ranges=10.0.1.0/24    # Use the IP range of your Cloud Run subnet ie subnet-int-usc1
-    --target-tags=http-server      # If your Tini VM has a network tag
+    --source-ranges=10.0.1.0/24 \
+    --target-tags=http-server
+
 
 Done
 
 # allow access for cloud run to access the vm
 ==============================================
-
+07.
+====
 gcloud run services update helloservice1 \
     --project=pk-aiproject \
     --region=us-central1 \

@@ -61,7 +61,7 @@ def hello():
 # Assuming you know the internal IP address of your CLOUDRUN server VM
 # CLOUDRUN_SERVER_IP = os.environ.get("CLOUDRUN_SERVER_IP")
 # CLOUDRUN_SERVER_IP = "34.58.118.42"
-CLOUDRUN_SERVER_IP = "10.0.1.2"
+CLOUDRUN_SERVER_IP = "10.0.1.3"
 CLOUDRUN_SERVER_PORT = 8082
 CLOUDRUN_SERVER_ENDPOINT = f"http://{CLOUDRUN_SERVER_IP}:{CLOUDRUN_SERVER_PORT}"  # Replace /your-endpoint
 
