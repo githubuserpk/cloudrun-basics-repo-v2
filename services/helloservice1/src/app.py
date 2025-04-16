@@ -73,7 +73,7 @@ def invoke_cloudrun_server():
     try:
         response = requests.get(CLOUDRUN_SERVER_ENDPOINT)
         response.raise_for_status()  # Raise an exception for bad status codes
-        return response.json()  # Or response.text if it's not JSON
+        return response.text  # Or response.text if it's not JSON
     except requests.exceptions.RequestException as e:
         print(f"Error connecting to CLOUDRUN server: {e}")
         return None
