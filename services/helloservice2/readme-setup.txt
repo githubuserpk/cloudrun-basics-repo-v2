@@ -158,6 +158,9 @@ edit to port 8082 for default_server
 
 Access the web server from http://<EXT-IP>:8082 
 
+restart web server if it is not running
+sudo systemctl restart nginx
+
 Done
 
 # create firewall rule to allow the traffic
@@ -183,6 +186,13 @@ gcloud run services update helloservice1 \
     --allow-internal
 
 Done
+
+Troubleshooting logs 
+gcloud run services logs read helloservice1 \
+  --project=pk-aiproject \
+  --region=us-central1 \
+  --limit=50
+
 
 
 

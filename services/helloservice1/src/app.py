@@ -38,13 +38,23 @@ def hello():
     """Simple route to verify the service is running."""
     current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Format the current time
 
+    result2 = invoke_cloudrun_server()
+    if result2:
+        print("Successfully invoked CLOUDRUN server:")
+        print(result2)
+    else:
+        print("Failed to invoke CLOUDRUN server.")
+
+
     return Response(
         "Hello PK -\n"
         "repo: cloudrun-basic-repo-v2\n"
         "service: helloservice1\n"
-        f"current time is: {current_time}",
+        f"current time is: {current_time}\n"
+        f"invoked cloudrun server vm on port 8081 result: {result2}",
         mimetype="text/plain"
     )
+
 
 
 
@@ -72,9 +82,4 @@ def invoke_cloudrun_server():
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8081)
 
-    result = invoke_cloudrun_server()
-    if result:
-        print("Successfully invoked CLOUDRUN server:")
-        print(result)
-    else:
-        print("Failed to invoke CLOUDRUN server.")
+
