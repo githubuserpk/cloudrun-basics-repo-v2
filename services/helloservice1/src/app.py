@@ -3,6 +3,9 @@ from flask import Flask, Response
 from google.cloud import storage
 from datetime import datetime
 
+import requests
+import io
+
 import pkg_resources
 print(pkg_resources.get_distribution("google-cloud-storage"))
 
@@ -44,6 +47,34 @@ def hello():
     )
 
 
+
+# Assuming you know the internal IP address of your CLOUDRUN server VM
+# CLOUDRUN_SERVER_IP = os.environ.get("CLOUDRUN_SERVER_IP")
+CLOUDRUN_SERVER_IP = "34.58.118.42"
+CLOUDRUN_SERVER_PORT = 8082
+CLOUDRUN_SERVER_ENDPOINT = f"http://{CLOUDRUN_SERVER_IP}:{CLOUDRUN_SERVER_PORT}"  # Replace /your-endpoint
+
+def invoke_cloudrun_server():
+    if not CLOUDRUN_SERVER_IP:
+        print("Error: CLOUDRUN_SERVER_IP environment variable not set.")
+        return None
+
+    try:
+        response = requests.get(CLOUDRUN_SERVER_ENDPOINT)
+        response.raise_for_status()  # Raise an exception for bad status codes
+        return response.json()  # Or response.text if it's not JSON
+    except requests.exceptions.RequestException as e:
+        print(f"Error connecting to CLOUDRUN server: {e}")
+        return None
+
+
 # Run on port 8081 (Cloud Run expects the container to listen on this port)
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8081)
+
+    result = invoke_cloudrun_server()
+    if result:
+        print("Successfully invoked CLOUDRUN server:")
+        print(result)
+    else:
+        print("Failed to invoke CLOUDRUN server.")

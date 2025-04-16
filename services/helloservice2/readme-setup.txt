@@ -103,30 +103,48 @@ gcloud compute firewall-rules create allow-cloud-run-to-tini \
 ===============
 modified steps:
 ===============
+gcloud compute networks create vpc-int-usc1 \
+    --project=pk-aiproject \
+    --subnet-mode=custom \
+    --description="VPC network for my Tini server and Cloud Run"
+
+Done
+
+gcloud compute networks subnets create subnet-int-usc1 \
+    --project=pk-aiproject \
+    --region=us-central1 \
+    --network=vpc-int-usc1 \
+    --range=10.0.1.0/24  # Choose an appropriate IP range for your subnet
+    --description="Subnet for my Tini server"
+
+Done
+
+create vpc network:
+===================
 
 create vm
 ============
-gcloud compute instances create tiny-server-vm \
+gcloud compute instances create cloudrun-server-vm \
   --project=pk-aiproject \
-  --zone=us-south1-b \
+  --zone=us-central1-a \
   --machine-type=e2-micro \
-  --network-interface=network=vpc-int-us,subnet=subnet-int-us \
+  --network-interface=network=vpc-int-usc1,subnet=subnet-int-usc1 \
   --boot-disk-size=10GB \
   --boot-disk-type=pd-standard \
   --image=debian-12-bookworm-v20250311 \
   --image-project=debian-cloud \
   --labels=serverless-access=enabled,tier=backend \
-  --tags=http-server,https-server
+  --tags=http-server,https-server,cloudrun-server
 
 
 firewall: allow ssh port 22
 ===========================
-gcloud compute firewall-rules create allow-ssh \
+gcloud compute firewall-rules create allow-ssh-to-crvm \
     --project=pk-aiproject \
-    --network=vpc-int-us \
+    --network=vpc-int-usc1 \
     --allow=tcp:22 \
     --source-ranges=0.0.0.0/0    # Use the IP range of your Cloud Run subnet ie subnet-int-us
-    --target-tags=http-server      # If your Tini VM has a network tag
+    --target-tags=http-server,cloudrun-server      # If your cloudrun VM has a network tag
 
 
 setup nginx
@@ -138,36 +156,33 @@ ps auwx | grep nginx
 sudo nano /etc/nginx/sites-available/default
 edit to port 8082 for default_server
 
+Access the web server from http://<EXT-IP>:8082 
+
+Done
 
 # create firewall rule to allow the traffic
 =============================================
-gcloud compute firewall-rules create allow-cloud-run-to-tini \
+gcloud compute firewall-rules create allow-cloud-run-to-crvm \
     --project=pk-aiproject \
-    --network=vpc-int-us \
+    --network=vpc-int-usc1 \
     --allow=tcp:8082 \
     --source-ranges=10.0.1.0/24    # Use the IP range of your Cloud Run subnet ie subnet-int-us
     --target-tags=http-server      # If your Tini VM has a network tag
 
+Done
 
 # allow access for cloud run to access the vm
 ==============================================
-AAAA
+
 gcloud run services update helloservice1 \
     --project=pk-aiproject \
     --region=us-central1 \
-    --network=vpc-int-us \
-    --subnet=subnet-int-us  # Replace with the subnet where your Tini VM is
+    --network=vpc-int-usc1 \
+    --subnet=subnet-int-usc1  # Replace with the subnet where your Tini VM is
     --vpc-egress=all-traffic \
     --allow-internal
 
-BBBB 
+Done
 
-# create firewall rule to allow the traffic
-=============================================
-gcloud compute firewall-rules create allow-cloud-run-to-tini \
-    --project=pk-aiproject \
-    --network=vpc-int-us \
-    --allow=tcp:8082 \
-    --source-ranges=10.0.1.0/24    # Use the IP range of your Cloud Run subnet ie subnet-int-us
-    --target-tags=http-server      # If your Tini VM has a network tag
+
 
