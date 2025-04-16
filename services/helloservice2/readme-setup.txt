@@ -216,6 +216,9 @@ gcloud run services update helloservice1 \
 
 Done
 
+08.
+====
+update the app.py cloud run with internal ip of the vm and redeploy the cloud run service
 Troubleshooting logs 
 gcloud run services logs read helloservice1 \
   --project=pk-aiproject \
