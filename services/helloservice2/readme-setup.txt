@@ -146,6 +146,16 @@ gcloud compute firewall-rules create allow-ssh-to-crvm \
     --source-ranges=0.0.0.0/0    # Use the IP range of your Cloud Run subnet ie subnet-int-us
     --target-tags=http-server,cloudrun-server      # If your cloudrun VM has a network tag
 
+firewall: allow http 8082 to crvm 
+
+gcloud compute firewall-rules create allow-http-to-crvm \
+    --project=pk-aiproject \
+    --network=vpc-int-usc1 \
+    --allow=tcp:80,tcp:443,tcp:8082 \
+    --source-ranges=0.0.0.0/0 \
+    --target-tags=http-server,cloudrun-server
+
+
 
 setup nginx
 ===============
@@ -155,6 +165,11 @@ ps auwx | grep nginx
 
 sudo nano /etc/nginx/sites-available/default
 edit to port 8082 for default_server
+
+make sure nginx is running using netstat
+sudo netstat -tulnp | grep 8082
+
+
 
 Access the web server from http://<EXT-IP>:8082 
 
@@ -169,7 +184,7 @@ gcloud compute firewall-rules create allow-cloud-run-to-crvm \
     --project=pk-aiproject \
     --network=vpc-int-usc1 \
     --allow=tcp:8082 \
-    --source-ranges=10.0.1.0/24    # Use the IP range of your Cloud Run subnet ie subnet-int-us
+    --source-ranges=10.0.1.0/24    # Use the IP range of your Cloud Run subnet ie subnet-int-usc1
     --target-tags=http-server      # If your Tini VM has a network tag
 
 Done
