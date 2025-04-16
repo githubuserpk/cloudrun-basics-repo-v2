@@ -36,7 +36,7 @@ on:
 
 env:
   PROJECT_ID: pk-aiproject
-  REGION: us-south1
+  REGION: us-central1
   SERVICE_NAME: helloservice1
   IMAGE_NAME: helloservice1-image
   REPO_NAME: helloservice-repo
