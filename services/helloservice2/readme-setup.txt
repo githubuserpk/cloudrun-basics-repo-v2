@@ -108,7 +108,7 @@ modified steps:
 gcloud compute networks create vpc-int-usc1 \
     --project=pk-aiproject \
     --subnet-mode=custom \
-    --description="VPC network for my Tini server and Cloud Run"
+    --description="VPC network for my Tini cloud run server and Cloud Run"
 
 Done
 
@@ -119,7 +119,7 @@ gcloud compute networks subnets create subnet-int-usc1 \
     --region=us-central1 \
     --network=vpc-int-usc1 \
     --range=10.0.1.0/24  # Choose an appropriate IP range for your subnet
-    --description="Subnet for my Tini server"
+    --description="Subnet for my Tini cloud run server"
 
 Done
 
@@ -167,14 +167,18 @@ gcloud compute firewall-rules create allow-http-to-crvm \
 
 
 
-setup nginx
-===============
+06. Install nginx server on the vm 
+===================================
+ssh to the vm 
 sudo apt-get update
 sudo apt-get install -y nginx
 ps auwx | grep nginx
 
-sudo nano /etc/nginx/sites-available/default
-edit to port 8082 for default_server
+# sudo nano /etc/nginx/sites-available/default and edit to port 8082 for default_server
+sudo sed -i 's/listen 80 default_server;/listen 8082 default_server;/g' /etc/nginx/sites-available/default
+sudo sed -i 's/listen \[::\]:80 default_server;/listen [::]:8082 default_server;/g' /etc/nginx/sites-available/default
+
+
 
 make sure nginx is running using netstat
 sudo netstat -tulnp | grep 8082
@@ -185,6 +189,9 @@ Access the web server from http://<EXT-IP>:8082
 
 restart web server if it is not running
 sudo systemctl restart nginx
+
+curl http://localhost:8082  # from the vm 
+http://<EXT-IP>:8082        # from browser
 
 Done
 
@@ -210,7 +217,7 @@ gcloud run services update helloservice1 \
     --project=pk-aiproject \
     --region=us-central1 \
     --network=vpc-int-usc1 \
-    --subnet=subnet-int-usc1  # Replace with the subnet where your Tini VM is
+    --subnet=subnet-int-usc1  
     --vpc-egress=all-traffic \
     --allow-internal
 
